@@ -1,0 +1,146 @@
+<!-- This template provides the access to the platform to use queueing service sending and editing  -->
+<!-- This template is adapted using the tutorial. I confirm that the sources code belongs to https://scotch.io/tutorials/authentication-and-authorization-with-flask-login-->
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+<style>
+    input[type='submit'], button, [aria-label]{
+      cursor: pointer;
+    }
+    #spoiler{
+      display: none;
+    }
+  </style>
+
+
+
+<form action="javascript:void(0);" method="POST" onsubmit="app.Add()" > 
+    <label for="fname">Please enter a value</label><br>
+    <input type="text" id="add-name" name="user-value" placeholder="New values" required>
+    <input type="submit" value="Add" id="chris"  >
+</form>
+
+
+
+<div id="spoiler" role="aria-hidden">
+    <form action="javascript:void(0);" method="POST" id="saveEdit">
+      <input type="text" id="edit-name" name="user-modified">
+      <input type="submit" value="Edit" id='chris2' /> <a onclick="CloseInput()" aria-label="Close">&#10006;</a>
+    </form>
+</div>
+
+
+<p id="counter"></p>
+
+<table>
+  <tr>
+    <th>Queue System</th>
+  </tr>
+    <tbody  id="valores">
+    </tbody>
+</table>
+<script>
+var app = new function() {
+
+    this.el = document.getElementById('valores');
+  
+    this.valores = [];
+  
+    this.Count = function(data) {
+      var el   = document.getElementById('counter');
+      var name = 'task';
+  
+      if (data) {
+        if (data > 1) {
+          name = 'valores';
+        }
+        el.innerHTML = data + ' ' + name ;
+      } else {
+        el.innerHTML = 'No ' + name;
+      }
+    };
+    
+    this.FetchAll = function() {
+      var data = '';
+  
+      if (this.valores.length > 0) {
+        for (i = 0; i < this.valores.length; i++) {
+          data += '<tr>';
+          data += '<td>' + this.valores[i] + '</td>';
+          data += '<td><button onclick="app.Edit(' + i + ')">Edit</button></td>';
+          data += '<td><button onclick="app.Delete(' + i + ')" style="visibility:hidden">Delete</button></td>';
+          data += '</tr>';
+        }
+      }
+  
+      this.Count(this.valores.length);
+      return this.el.innerHTML = data;
+    };
+  
+    this.Add = function () {
+      el = document.getElementById('add-name');
+      // Get the value
+      var task = el.value;
+  
+      if (task) {
+        // Add the new value
+        this.valores.push(task.trim());
+        // Reset input value
+        el.value = '';
+        // Dislay the new list
+        this.FetchAll();
+      }
+    };
+  
+    this.Edit = function (item) {
+      var el = document.getElementById('edit-name');
+      // Display value in the field
+      el.value = this.valores[item];
+      // Display fields
+      document.getElementById('spoiler').style.display = 'block';
+      self = this;
+  
+      document.getElementById('saveEdit').onsubmit = function() {
+        // Get value
+        var task = el.value;
+  
+        if (task) {
+          // Edit value
+          self.valores.splice(item, 1, task.trim());
+          // Display the new list
+          self.FetchAll();
+          // Hide fields
+          CloseInput();
+        }
+      }
+    };
+  
+    this.Delete = function (item) {
+      // Delete the current row
+      this.valores.splice(item, 1);
+      // Display the new list
+      this.FetchAll();
+    };
+    
+  }
+  
+  app.FetchAll();
+  
+  function CloseInput() {
+    document.getElementById('spoiler').style.display = 'none';
+  }
+
+
+
+
+  
+  </script>
+  
+  
+
+  {% endblock %}

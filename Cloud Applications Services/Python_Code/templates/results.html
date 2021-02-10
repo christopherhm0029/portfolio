@@ -1,0 +1,34 @@
+<!-- This webpages maps all the inputs and changes in the Dynamodb database from AWS  -->
+<!-- This template is adapted using the tutorial. I confirm that the sources code belongs to https://scotch.io/tutorials/authentication-and-authorization-with-flask-login-->
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Original</th>
+            <th>Modified</th>
+
+        <tr>
+    </thead>
+    <tbody>
+        {% for x, y in total %}
+
+        <tr>
+            <td>{{ x }}</td>
+            <td>{{ y }}</td>
+
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+{% endblock %}
