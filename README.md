@@ -1,4 +1,4 @@
-Dear people, 
+Dear Sir/Madam, 
 
 Hope you are having a great day.
 
